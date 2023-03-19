@@ -4,8 +4,9 @@ const app = express();
 
 app.get("/", async (req, res) => {
   try {
-    const start = req.params.from;
-    const end = req.params.to;
+    const start = "2023-03-16"; //req.params.from;
+    const end = "2023-03-18"; //req.params.to;
+    console.log(start);
     const results = await create_pred(start, end);
     res.send(results);
   } catch (error) {
