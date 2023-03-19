@@ -4,9 +4,11 @@ const app = express();
 
 app.get("/", async (req, res) => {
   try {
-    const start = "2023-03-16"; //req.params.from;
-    const end = "2023-03-18"; //req.params.to;
-    console.log(start);
+    
+    const start = req.query.from;
+    const end = req.query.to;
+    //const start = "2023-03-16";
+    //const end = "2023-03-18";
     const results = await create_pred(start, end);
     res.send(results);
   } catch (error) {
@@ -16,5 +18,5 @@ app.get("/", async (req, res) => {
 });
 
 app.listen(3004, () => {
-  console.log("Server listening on port 3000");
+  console.log("Server listening on port 3004");
 });

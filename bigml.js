@@ -1,17 +1,26 @@
 const bigml = require("bigml");
 const fs = require("fs");
 const axios = require("axios");
-
+const { DataFrame } = require('dataframe-js');
 var resource_uri = "";
 
 async function create_pred(start_date, end_date) {
-  const x = await axios.get("http://localhost:3003", {
+  const orders = await axios.get("http://localhost:3003", {
     params: {
       start: start_date,
       end: end_date,
     },
   });
-  console.log(x.data);
+
+  console.log(orders.data);
+  const toppingsList = orders.data.orders.map(order => order.toppings);
+
+    // Create a DataFrame from the toppings list
+    const df = new DataFrame(toppingsList, ['Onions','Mushrooms', 'Pepperoni', 'Sausage', 'Extra Cheese', 'Green Pepper', 'Tomato', 'Bacon', 'Corn', 'Pineapple']);
+
+    // Write the DataFrame as a CSV string to a file
+    fs.writeFileSync('toppings_file.csv', df.toCSV());
+
   const connection = new bigml.BigML(
     "SHOHAM2002",
     "b3639895c3ac41f4f9c1eb765cc0d77772391ba5"
