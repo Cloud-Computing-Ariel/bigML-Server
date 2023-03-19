@@ -4,11 +4,11 @@ const axios = require("axios");
 
 var resource_uri = "";
 
-async function create_pred() {
-  const x = await axios.get("http://localhost:3003/exportOrders", {
+async function create_pred(start_date, end_date) {
+  const x = await axios.get("http://localhost:3003", {
     params: {
-      start: "03/03/2030",
-      end: "03/03/2030",
+      start: start_date,
+      end: end_date,
     },
   });
   console.log(x.data);
