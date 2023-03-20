@@ -1,7 +1,7 @@
 const bigml = require("bigml");
 const fs = require("fs");
 const axios = require("axios");
-const { DataFrame } = require('dataframe-js');
+const { DataFrame } = require("dataframe-js");
 var resource_uri = "";
 
 async function create_pred(start_date, end_date) {
@@ -13,13 +13,24 @@ async function create_pred(start_date, end_date) {
   });
 
   console.log(orders.data);
-  const toppingsList = orders.data.orders.map(order => order.toppings);
-  
-    // Create a DataFrame from the toppings list
-    const df = new DataFrame(toppingsList, ['Onions','Mushrooms', 'Pepperoni', 'Sausage', 'Extra Cheese', 'Green Pepper', 'Tomato', 'Bacon', 'Corn', 'Pineapple']);
-  
-    // Write the DataFrame as a CSV string to a file
-    fs.writeFileSync('toppings_file.csv', df.toCSV());
+  const toppingsList = orders.data.orders.map((order) => order.toppings);
+
+  // Create a DataFrame from the toppings list
+  const df = new DataFrame(toppingsList, [
+    "Onions",
+    "Mushrooms",
+    "Pepperoni",
+    "Sausage",
+    "Extra Cheese",
+    "Green Pepper",
+    "Tomato",
+    "Bacon",
+    "Corn",
+    "Pineapple",
+  ]);
+
+  // Write the DataFrame as a CSV string to a file
+  fs.writeFileSync("toppings_file.csv", df.toCSV());
 
   const connection = new bigml.BigML(
     "SHOHAM2002",
@@ -91,10 +102,10 @@ async function fetchData() {
       var confidence = rule.confidence;
       var support = rule.support[0];
       results.push({
-        Antecedent: antecedent,
-        Consequent: consequent,
-        "Support %": support,
-        "Confidence %": confidence,
+        antecedent,
+        consequent,
+        support,
+        confidence,
       });
     }
     console.log("Finish fetch data");
@@ -104,6 +115,5 @@ async function fetchData() {
     console.error(error);
   }
 }
-
 
 module.exports = { create_pred };
