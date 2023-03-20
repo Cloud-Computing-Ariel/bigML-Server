@@ -14,10 +14,10 @@ async function create_pred(start_date, end_date) {
 
   console.log(orders.data);
   const toppingsList = orders.data.orders.map(order => order.toppings);
-
+  
     // Create a DataFrame from the toppings list
     const df = new DataFrame(toppingsList, ['Onions','Mushrooms', 'Pepperoni', 'Sausage', 'Extra Cheese', 'Green Pepper', 'Tomato', 'Bacon', 'Corn', 'Pineapple']);
-
+  
     // Write the DataFrame as a CSV string to a file
     fs.writeFileSync('toppings_file.csv', df.toCSV());
 
@@ -82,8 +82,12 @@ async function fetchData() {
     const data = await response.json();
 
     for (const rule of data.associations.rules) {
-      var antecedent = data.associations.items[rule.lhs].name;
-      var consequent = data.associations.items[rule.rhs].name;
+      // console.log("lhs "+rule.lhs[0]);
+      // console.log("rhs "+rule.rhs[0]);
+      // console.log(data.associations.items[rule.lhs[0]]);
+      // console.log(data.associations.items[rule.rhs[0]]);
+      var antecedent = data.associations.items[rule.lhs[0]].name;
+      var consequent = data.associations.items[rule.rhs[0]].name;
       var confidence = rule.confidence;
       var support = rule.support[0];
       results.push({
@@ -94,10 +98,12 @@ async function fetchData() {
       });
     }
     console.log("Finish fetch data");
+    console.log(results);
     return results;
   } catch (error) {
     console.error(error);
   }
 }
+
 
 module.exports = { create_pred };
